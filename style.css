@@ -194,3 +194,55 @@ body {
     transform: scale(0.9) rotate(-3deg);
     background: #ff0040;
 }
+/* Styl dla napisu "Kocham Cię" */
+.love-message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 100, 150, 0.4); /* Półprzezroczyste tło */
+    backdrop-filter: blur(10px); /* Delikatne rozmycie tła */
+    z-index: 9999; /* Upewnij się, że jest na wierzchu */
+    opacity: 0; /* Domyślnie ukryte */
+    visibility: hidden; /* Domyślnie ukryte */
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.love-message-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.love-text {
+    font-family: 'Dancing Script', cursive; /* Użyj tej samej romantycznej czcionki */
+    font-size: 8rem; /* Bardzo duży rozmiar */
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 50, 100, 0.6);
+    animation: scaleInBounce 1s ease-out forwards; /* Animacja pojawiania się */
+    animation-delay: 0.5s; /* Opóźnienie, żeby pojawiło się po konfetti */
+    opacity: 0; /* Domyślnie ukryte, zanim zacznie się animacja */
+}
+
+@keyframes scaleInBounce {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Dostosowanie rozmiaru na mniejszych ekranach */
+@media (max-width: 768px) {
+    .love-text {
+        font-size: 5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .love-text {
+        font-size: 3rem;
+    }
+}

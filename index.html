@@ -43,6 +43,9 @@
             </p>
 
             <button class="magic-btn" onclick="celebrate()">Kliknij tutaj, Skarbie!</button>
+            <div class="love-message-overlay" id="loveMessageOverlay">
+            <p class="love-text">Kocham Cię ❤️</p>
+        </div>
         </div>
     </main>
 
@@ -50,6 +53,8 @@
 
 <script>
     function celebrate() {
+        const loveMessageOverlay = document.getElementById('loveMessageOverlay');
+
         // 1. Efekt BOOM (Konfetti w kształcie serc)
         const duration = 3 * 1000;
         const end = Date.now() + duration;
@@ -60,14 +65,16 @@
                 angle: 60,
                 spread: 55,
                 origin: { x: 0 },
-                colors: ['#ff4d6d', '#ff85a1', '#ffffff']
+                colors: ['#ff4d6d', '#ff85a1', '#ffffff', '#ff0000'],
+                shapes: ['heart', 'circle'] // Dodajemy serca i kółka
             });
             confetti({
                 particleCount: 3,
                 angle: 120,
                 spread: 55,
                 origin: { x: 1 },
-                colors: ['#ff4d6d', '#ff85a1', '#ffffff']
+                colors: ['#ff4d6d', '#ff85a1', '#ffffff', '#ff0000'],
+                shapes: ['heart', 'circle'] // Dodajemy serca i kółka
             });
 
             if (Date.now() < end) {
@@ -75,23 +82,33 @@
             }
         }());
 
-        // 2. Efekt WOW - strzał centralny
+        // 2. Efekt WOW - strzał centralny z większą ilością serc
         confetti({
             particleCount: 150,
-            spread: 70,
+            spread: 90, // Większy rozrzut
             origin: { y: 0.6 },
-            colors: ['#ff4d6d', '#ffffff', '#ff0000']
+            colors: ['#ff4d6d', '#ffffff', '#ff0000', '#ffc0cb'], // Więcej odcieni różu
+            shapes: ['heart', 'circle'] // Upewnij się, że są serca!
         });
 
-        // 3. Otwarcie nowej karty po krótkim opóźnieniu (żeby nacieszyć oko efektem)
+        // 3. Pokaż animowany napis "Kocham Cię <3"
+        loveMessageOverlay.classList.add('show');
+
+        // Opcjonalnie: Uruchom ponowną animację napisu, jeśli został już raz pokazany
+        loveMessageOverlay.querySelector('.love-text').style.animation = 'none';
+        loveMessageOverlay.querySelector('.love-text').offsetHeight; // Trigger reflow
+        loveMessageOverlay.querySelector('.love-text').style.animation = null;
+
+
+        // 4. Otwarcie nowej karty po krótkim opóźnieniu
+        // (żeby nacieszyć oko efektem i napisem)
         setTimeout(() => {
-            // Tutaj wpisz adres strony, która ma się otworzyć
-            const newWindow = window.open('https://pl.wikipedia.org/wiki/Mi%C5%82o%C5%9B%C4%87', '_blank');
             
-            if (!newWindow) {
-                alert("Skarbie, Twoja przeglądarka zablokowała wyskakujące okienko! Pozwól mu się wyświetlić ❤️");
-            }
-        }, 1500);
+            
+            // Ukryj napis po otwarciu nowej karty
+            loveMessageOverlay.classList.remove('show');
+
+        }, 4000); // Wydłużono czas, aby napis był widoczny dłużej
     }
 </script>
 </body>
