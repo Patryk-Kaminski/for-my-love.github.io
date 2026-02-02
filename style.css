@@ -1,203 +1,180 @@
-:root {
-    --primary-pink: #ff4d6d;
-    --dark-pink: #c9184a;
-    --soft-white: rgba(255, 255, 255, 0.2);
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    background: #ff85a1;
     font-family: 'Montserrat', sans-serif;
+    overflow: hidden; /* Ukrywamy paski przewijania przy animacjach */
+}
+
+/* 1. ANIMOWANE TŁO (Vortex) */
+.background-vortex {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, #ff9a9e 0%, #fecfef 50%, #fe9a9e 100%);
+    filter: blur(20px);
+    z-index: -1;
+    animation: rotateBg 20s infinite linear;
+}
+
+@keyframes rotateBg {
+    from { transform: rotate(0deg) scale(1.2); }
+    to { transform: rotate(360deg) scale(1.2); }
+}
+
+/* 2. GŁÓWNY KONTENER (Poprawiony wyświetlacz) */
+.main-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 40px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(255, 77, 109, 0.3), inset 0 0 15px rgba(255,255,255,0.2);
+    animation: cardEntry 1.2s ease-out;
+}
+
+@keyframes cardEntry {
+    from { opacity: 0; transform: scale(0.8) translateY(50px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 3. TYTUŁ I TEKST */
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    color: #fff;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.sub-message {
+    color: white;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* 4. ANIMACJA SERCA (Z pulsującym ringiem) */
+.heart-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 20px 0;
+}
+
+.heart-main {
+    font-size: 5rem;
+    position: relative;
+    z-index: 2;
+    animation: heartBeat 1.2s infinite ease-in-out;
+}
+
+.pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    z-index: 1;
+    animation: ringOut 1.2s infinite ease-out;
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+@keyframes ringOut {
+    0% { width: 40px; height: 40px; opacity: 1; }
+    100% { width: 120px; height: 120px; opacity: 0; }
+}
+
+/* 5. RAMKA NA WIERSZ */
+.poem-box {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
     overflow: hidden;
 }
 
-/* Animowane tło gradientowe */
-.bg-animate {
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 80%);
-    animation: moveBg 10s linear infinite;
-}
-
-/* Efekt karty Glassmorphism */
-.card {
-    position: relative;
-    z-index: 10;
-    background: var(--soft-white);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 3rem;
-    border-radius: 30px;
-    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
-    text-align: center;
-    max-width: 400px;
-    transform: translateY(0);
-    transition: transform 0.3s ease;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-}
-
-.title {
+.poem-text {
     font-family: 'Dancing Script', cursive;
-    font-size: 3rem;
+    font-size: 1.2rem;
     color: white;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
-.message {
+/* 6. MAGICZNY PRZYCISK */
+.magic-btn {
+    background: #ff4d6d;
     color: white;
-    line-height: 1.6;
-    font-size: 1.1rem;
-}
-
-/* Główne pulsujące serce */
-.heart-main {
-    font-size: 5rem;
-    margin: 20px 0;
-    animation: pulse 1.5s ease-in-out infinite;
-    display: inline-block;
-}
-
-/* Przycisk z efektem */
-.btn {
-    background: white;
-    color: var(--dark-pink);
     border: none;
-    padding: 15px 30px;
+    padding: 15px 35px;
     border-radius: 50px;
+    font-size: 1.1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: 0.3s all;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
+    transition: 0.3s;
 }
 
-.btn:hover {
-    background: var(--primary-pink);
-    color: white;
-    transform: scale(1.1);
+.magic-btn:hover {
+    transform: scale(1.1) translateY(-3px);
+    box-shadow: 0 15px 25px rgba(255, 77, 109, 0.6);
+    background: #ff758c;
 }
 
-/* Animacje */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-@keyframes moveBg {
-    0% { transform: translate(-25%, -25%); }
-    100% { transform: translate(0, 0); }
-}
-
-/* Pływające serca w tle */
-.heart {
+/* 7. PŁYWAJĄCE ELEMENTY */
+.petal, .heart-float {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background: red;
-    transform: rotate(45deg);
-    opacity: 0.3;
-    animation: fly 10s infinite linear;
-    bottom: -50px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50% 0 50% 50%;
+    width: 15px;
+    height: 15px;
+    top: -20px;
+    animation: floatDown 8s infinite linear;
 }
 
-.heart::before, .heart::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    background: red;
-    border-radius: 50%;
-    position: absolute;
+@keyframes floatDown {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
-.heart::before { top: -10px; left: 0; }
-.heart::after { left: -10px; top: 0; }
+/* Rozmieszczenie losowe płatków */
+.petal:nth-child(1) { left: 10%; animation-delay: 0s; }
+.petal:nth-child(2) { left: 40%; animation-delay: 2s; }
+.petal:nth-child(3) { left: 70%; animation-delay: 4s; }
 
-/* Rozmieszczenie serc */
-.heart:nth-child(1) { left: 10%; animation-delay: 0s; }
-.heart:nth-child(2) { left: 30%; animation-delay: 2s; }
-.heart:nth-child(3) { left: 50%; animation-delay: 4s; }
-.heart:nth-child(4) { left: 70%; animation-delay: 6s; }
-.heart:nth-child(5) { left: 90%; animation-delay: 8s; }
-
-@keyframes fly {
-    0% { transform: translateY(0) rotate(45deg); opacity: 0; }
-    50% { opacity: 0.5; }
-    100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
-}
-
-
-/* Definicje animacji */
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes shine {
-    0% { left: -100%; }
-    20% { left: 100%; }
-    100% { left: 100%; }
-}
-/* Responsywność - Magia dla urządzeń mobilnych */
-
-@media (max-width: 600px) {
-    body {
-        /* Zapobiegamy przewijaniu na boki, gdy serca wylatują poza ekran */
-        overflow: hidden; 
-        padding: 20px;
-    }
-
-    .card {
-        padding: 1.5rem; /* Mniejszy margines wewnętrzny */
-        width: 90%;      /* Karta zajmie prawie całą szerokość ekranu */
-        max-width: none;
-        border-radius: 20px;
-    }
-
-    .title {
-        font-size: 2rem; /* Mniejszy nagłówek, żeby nie uciekał z linii */
-    }
-
-    .heart-main {
-        font-size: 3.5rem; /* Nieco mniejsze serce główne */
-        margin: 10px 0;
-    }
-
-    
-
-    .message {
-        font-size: 0.95rem;
-    }
-
-    .btn {
-        width: 100%;       /* Duży, wygodny przycisk do kliknięcia kciukiem */
-        padding: 12px;
-        font-size: 1rem;
-    }
-
-    /* Ukrywamy nadmiar serc w tle, żeby nie obciążać procesora telefonu */
-    .heart:nth-child(4), .heart:nth-child(5) {
-        display: none;
-    }
-}
-
-/* Obsługa ekranów o bardzo małej wysokości (np. telefony w poziomie) */
-@media (max-height: 500px) {
-    .card {
-        transform: scale(0.8); /* Pomniejszamy całą kartę, by zmieściła się w pionie */
-    }
-    .heart-main {
-        display: none; /* Ukrywamy duże serce, by starczyło miejsca na tekst */
-    }
+/* RESPORSYWNOŚĆ */
+@media (max-width: 480px) {
+    .glass-card { padding: 25px 15px; width: 95%; }
+    .title { font-size: 2rem; }
+    .heart-main { font-size: 3.5rem; }
+    .poem-text { font-size: 1.1rem; }
 }

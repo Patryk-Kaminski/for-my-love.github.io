@@ -8,31 +8,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="bg-animate"></div>
-    
-    <div class="hearts-container">
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
-        <div class="heart"></div>
+    <div class="background-vortex"></div>
+
+    <div class="floating-elements">
+        <div class="petal"></div>
+        <div class="heart-float"></div>
+        <div class="petal"></div>
+        <div class="heart-float"></div>
+        <div class="petal"></div>
     </div>
 
-    <main class="card">
-        <div class="glass-content">
+    <main class="main-container">
+        <div class="glass-card">
             <h1 class="title">Szczęśliwych Walentynek!</h1>
-            <div class="heart-main">❤️</div>
-            <p class="message">
-                Jesteś najpiękniejszą rzeczą, jaka mnie spotkała. <br>
+            
+            <div class="heart-wrapper">
+                <div class="heart-main">❤️</div>
+                <div class="pulse-ring"></div>
+            </div>
+
+            <div class="poem-box">
+                <p class="poem-text">
+                    W moich myślach tylko Ty,<br>
+                    z Tobą najpiękniejsze sny.<br>
+                    Twoje serce – mój cały świat,<br>
+                    bądź przy mnie przez setki lat! ❤️
+                </p>
+            </div>
+
+            <p class="sub-message">
+                Jesteś najpiękniejszą rzeczą, jaka mnie spotkała.<br>
                 Dziękuję, że jesteś przy mnie każdego dnia.
             </p>
-            <button class="btn" onclick="celebrate()">Kliknij tutaj, Skarbie!</button>
+
+            <button class="magic-btn" onclick="celebrate()">Kliknij tutaj, Skarbie!</button>
         </div>
     </main>
 
     <script>
         function celebrate() {
-            alert("Kocham Cię najbardziej na świecie! ❤️");
+            alert("Kocham Cię najbardziej na świecie! 💖");
         }
     </script>
 </body>
