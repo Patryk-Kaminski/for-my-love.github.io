@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Patryk Kamiński">
     <title>Dla Mojej Jedynej ❤️</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -10,7 +11,16 @@
 </head>
 <body>
     <div class="background-vortex"></div>
-
+    <div id="valentine-question" class="question-overlay">
+    <div class="glass-card">
+        <h1 class="title">Mam do Ciebie pytanie...</h1>
+        <p class="poem-text">Czy zostaniesz moją Walentynką? ❤️</p>
+        <div class="btn-group">
+            <button class="magic-btn" onclick="acceptValentine()">TAK! 😍</button>
+            <button class="magic-btn btn-no" onmouseover="moveButton(this)">NIE 😢</button>
+        </div>
+    </div>
+    </div>
     <div class="floating-elements">
         <div class="petal"></div>
         <div class="heart-float"></div>
@@ -52,6 +62,74 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
+    function celebrate() {
+    const loveMessageOverlay = document.getElementById('loveMessageOverlay');
+    loveMessageOverlay.classList.add('show');
+
+    // 1. GŁÓWNY WYBUCH (Środek)
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ff4d6d', '#ff85a1', '#ffffff'],
+        shapes: ['heart']
+    });
+
+    // 2. DESZCZ SERC (Trwający 3 sekundy)
+    const duration = 3000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        // Wystrzały z lewej i prawej strony
+        confetti(Object.assign({}, defaults, { 
+            particleCount, 
+            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+            shapes: ['heart'],
+            colors: ['#ff0040', '#ffffff']
+        }));
+        confetti(Object.assign({}, defaults, { 
+            particleCount, 
+            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+            shapes: ['heart'],
+            colors: ['#ff0040', '#ffffff']
+        }));
+    }, 250);
+
+    // 3. EFEKT "SZKOLNEGO" KONFETTI (Boki)
+    setTimeout(() => {
+        confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#ff4d6d', '#ffffff']
+        });
+        confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#ff4d6d', '#ffffff']
+        });
+    }, 1000);
+
+    // Automatyczne ukrycie napisu po zakończeniu efektów
+    setTimeout(() => {
+        loveMessageOverlay.classList.remove('show');
+    }, 4500);
+}
     function celebrate() {
         const loveMessageOverlay = document.getElementById('loveMessageOverlay');
 
@@ -109,6 +187,48 @@
             loveMessageOverlay.classList.remove('show');
 
         }, 4000); // Wydłużono czas, aby napis był widoczny dłużej
+    }
+    // 1. Funkcja po kliknięciu TAK
+    function acceptValentine() {
+        // Efekt wybuchu na start
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ff4d6d', '#ffffff']
+        });
+
+        // Ukrywamy ekran pytania
+        document.getElementById('valentine-question').classList.add('hidden-overlay');
+    }
+
+    // 2. Funkcja uciekającego przycisku NIE
+    function moveButton(btn) {
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        
+        btn.style.position = 'absolute';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
+
+    // 3. Twoja główna funkcja "Celebracji" (ta z poprzedniego kroku)
+    function celebrate() {
+        const loveMessageOverlay = document.getElementById('loveMessageOverlay');
+        
+        confetti({
+            particleCount: 200,
+            spread: 100,
+            origin: { y: 0.6 },
+            shapes: ['heart']
+        });
+
+        loveMessageOverlay.classList.add('show');
+
+        setTimeout(() => {
+            
+            loveMessageOverlay.classList.remove('show');
+        }, 3000);
     }
 </script>
 </body>
