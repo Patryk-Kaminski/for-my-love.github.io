@@ -46,10 +46,53 @@
         </div>
     </main>
 
-    <script>
-        function celebrate() {
-            alert("Kocham Cię najbardziej na świecie! 💖");
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    function celebrate() {
+        // 1. Efekt BOOM (Konfetti w kształcie serc)
+        const duration = 3 * 1000;
+        const end = Date.now() + duration;
+
+        (function frame() {
+            confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff4d6d', '#ff85a1', '#ffffff']
+            });
+            confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff4d6d', '#ff85a1', '#ffffff']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+
+        // 2. Efekt WOW - strzał centralny
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ff4d6d', '#ffffff', '#ff0000']
+        });
+
+        // 3. Otwarcie nowej karty po krótkim opóźnieniu (żeby nacieszyć oko efektem)
+        setTimeout(() => {
+            // Tutaj wpisz adres strony, która ma się otworzyć
+            const newWindow = window.open('https://pl.wikipedia.org/wiki/Mi%C5%82o%C5%9B%C4%87', '_blank');
+            
+            if (!newWindow) {
+                alert("Skarbie, Twoja przeglądarka zablokowała wyskakujące okienko! Pozwól mu się wyświetlić ❤️");
+            }
+        }, 1500);
+    }
+</script>
 </body>
 </html>
