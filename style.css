@@ -1,3 +1,4 @@
+/* --- 1. RESET I BAZA --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,10 +12,10 @@ body {
     align-items: center;
     background: #ff85a1;
     font-family: 'Montserrat', sans-serif;
-    overflow: hidden; /* Ukrywamy paski przewijania przy animacjach */
+    overflow: hidden;
 }
 
-/* 1. ANIMOWANE TŁO (Vortex) */
+/* --- 2. TŁO I EFEKTY --- */
 .background-vortex {
     position: fixed;
     top: 0;
@@ -27,12 +28,49 @@ body {
     animation: rotateBg 20s infinite linear;
 }
 
-@keyframes rotateBg {
-    from { transform: rotate(0deg) scale(1.2); }
-    to { transform: rotate(360deg) scale(1.2); }
+/* Pływające elementy TŁA (powolne) */
+.heart-float {
+    position: absolute;
+    top: -20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: floatDown 8s infinite linear;
+    z-index: 0;
 }
 
-/* 2. GŁÓWNY KONTENER (Poprawiony wyświetlacz) */
+.heart-float::before {
+    content: '❤️';
+    font-size: 20px;
+    opacity: 0.6;
+}
+
+.heart-float:nth-child(1) { left: 10%; animation-delay: 0s; }
+.heart-float:nth-child(2) { left: 30%; animation-delay: 2s; }
+.heart-float:nth-child(3) { left: 50%; animation-delay: 4s; }
+.heart-float:nth-child(4) { left: 70%; animation-delay: 1s; }
+.heart-float:nth-child(5) { left: 90%; animation-delay: 3s; }
+
+/* --- NOWE: EFEKT SPADAJĄCYCH SERC (CELEBRACJA) --- */
+#celebration-hearts-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Żeby nie blokowały kliknięć */
+    z-index: -1; /* Za tekstem "Kocham Cię" */
+}
+
+.celebration-heart {
+    position: fixed;
+    top: -10%;
+    font-size: 30px; /* Większe niż w tle */
+    opacity: 0.9;
+    animation: celebrationFall linear forwards;
+}
+
+/* --- 3. LAYOUT I KARTY --- */
 .main-container {
     width: 100%;
     max-width: 450px;
@@ -50,15 +88,15 @@ body {
     padding: 40px 30px;
     text-align: center;
     box-shadow: 0 15px 35px rgba(255, 77, 109, 0.3), inset 0 0 15px rgba(255,255,255,0.2);
-    animation: cardEntry 1.2s ease-out;
+    transition: box-shadow 0.5s ease;
+    width: 100%;
 }
 
-@keyframes cardEntry {
-    from { opacity: 0; transform: scale(0.8) translateY(50px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
+.glass-card:hover {
+    box-shadow: 0 0 40px rgba(255, 77, 109, 0.5);
 }
 
-/* 3. TYTUŁ I TEKST */
+/* --- 4. TYPOGRAFIA --- */
 .title {
     font-family: 'Dancing Script', cursive;
     font-size: 2.8rem;
@@ -74,7 +112,29 @@ body {
     line-height: 1.5;
 }
 
-/* 4. ANIMACJA SERCA (Z pulsującym ringiem) */
+.poem-box {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.poem-text {
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: white;
+    line-height: 1.8;
+    letter-spacing: 0.5px;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    animation: fadeInText 2s ease-in;
+}
+
+/* --- 5. KOMPONENTY --- */
 .heart-wrapper {
     position: relative;
     display: inline-block;
@@ -101,39 +161,6 @@ body {
     animation: ringOut 1.2s infinite ease-out;
 }
 
-@keyframes heartBeat {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
-}
-
-@keyframes ringOut {
-    0% { width: 40px; height: 40px; opacity: 1; }
-    100% { width: 120px; height: 120px; opacity: 0; }
-}
-
-/* 5. RAMKA NA WIERSZ */
-.poem-box {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid white;
-    border-radius: 20px;
-    padding: 20px;
-    margin: 20px 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.poem-text {
-    font-family: sans-serif; /* Bardziej czytelna czcionka */
-    font-size: 1.1rem;                     /* Optymalny rozmiar */
-    font-weight: 400;                      /* Średnia grubość */
-    color: white;
-    line-height: 1.8;                      /* Większy odstęp między liniami dla czytelności */
-    letter-spacing: 0.5px;                 /* Delikatny odstęp między literami */
-    font-style: italic;                    /* Kursywa, aby zachować romantyczny charakter */
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-/* 6. MAGICZNY PRZYCISK */
 .magic-btn {
     background: #ff4d6d;
     color: white;
@@ -145,6 +172,9 @@ body {
     cursor: pointer;
     box-shadow: 0 10px 20px rgba(255, 77, 109, 0.4);
     transition: 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 5;
 }
 
 .magic-btn:hover {
@@ -153,140 +183,11 @@ body {
     background: #ff758c;
 }
 
-/* 7. PŁYWAJĄCE ELEMENTY */
-.petal, .heart-float {
-    position: absolute;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50% 0 50% 50%;
-    width: 15px;
-    height: 15px;
-    top: -20px;
-    animation: floatDown 8s infinite linear;
-}
-
-@keyframes floatDown {
-    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-}
-
-/* Rozmieszczenie losowe płatków */
-.petal:nth-child(1) { left: 10%; animation-delay: 0s; }
-.petal:nth-child(2) { left: 40%; animation-delay: 2s; }
-.petal:nth-child(3) { left: 70%; animation-delay: 4s; }
-
-/* RESPORSYWNOŚĆ */
-@media (max-width: 480px) {
-    .glass-card { padding: 25px 15px; width: 95%; }
-    .title { font-size: 2rem; }
-    .heart-main { font-size: 3.5rem; }
-    .poem-text { font-size: 1.1rem; }
-}
-@media (max-width: 480px) {
-    /* ... inne style ... */
-    .poem-text { 
-        font-size: 0.95rem; /* Nieco mniejszy tekst na bardzo małych ekranach */
-        line-height: 1.6;
-    }
-}
 .magic-btn:active {
     transform: scale(0.9) rotate(-3deg);
     background: #ff0040;
 }
-/* Styl dla napisu "Kocham Cię" */
-.love-message-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: rgba(255, 100, 150, 0.4); /* Półprzezroczyste tło */
-    backdrop-filter: blur(10px); /* Delikatne rozmycie tła */
-    z-index: 9999; /* Upewnij się, że jest na wierzchu */
-    opacity: 0; /* Domyślnie ukryte */
-    visibility: hidden; /* Domyślnie ukryte */
-    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-}
 
-.love-message-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.love-text {
-    font-family: 'Dancing Script', cursive; /* Użyj tej samej romantycznej czcionki */
-    font-size: 8rem; /* Bardzo duży rozmiar */
-    color: white;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 50, 100, 0.6);
-    animation: scaleInBounce 1s ease-out forwards; /* Animacja pojawiania się */
-    animation-delay: 0.5s; /* Opóźnienie, żeby pojawiło się po konfetti */
-    opacity: 0; /* Domyślnie ukryte, zanim zacznie się animacja */
-}
-
-@keyframes scaleInBounce {
-    0% { transform: scale(0); opacity: 0; }
-    50% { transform: scale(1.2); opacity: 1; }
-    70% { transform: scale(0.9); }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* Dostosowanie rozmiaru na mniejszych ekranach */
-@media (max-width: 768px) {
-    .love-text {
-        font-size: 5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .love-text {
-        font-size: 3rem;
-    }
-}
-/* Styl dla nakładki z pytaniem */
-.question-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #ff85a1; /* Stałe tło na start */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Musi być na samym wierzchu */
-    transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
-}
-
-/* Grupa przycisków */
-.btn-group {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-/* Styl dla przycisku NIE (nieco inny) */
-.btn-no {
-    background: #999 !important;
-    position: relative;
-    transition: 0.2s ease;
-}
-
-/* Klasa chowająca stronę startową */
-.hidden-overlay {
-    transform: translateY(-100%);
-}
-/* Nowy efekt dla przycisku "TAK" i "Kliknij tutaj" */
-.magic-btn {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Animowany błysk przesuwający się po przycisku */
 .magic-btn::after {
     content: '';
     position: absolute;
@@ -296,8 +197,107 @@ body {
     height: 200%;
     background: rgba(255, 255, 255, 0.4);
     transform: rotate(30deg);
-    transition: none;
     animation: shine 3s infinite;
+}
+
+.btn-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-no {
+    background: #999 !important;
+    transition: 0.2s ease;
+}
+
+/* --- 6. OVERLAYS --- */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.question-overlay {
+    background: #ff85a1;
+    transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.hidden-overlay {
+    transform: translateY(-100%);
+}
+
+.love-message-overlay {
+    background: rgba(255, 100, 150, 0.85); /* Nieco ciemniejsze tło, żeby tekst był czytelniejszy */
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+    /* Ważne: relative, żeby kontener serc był w środku */
+    position: fixed; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.love-message-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.love-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 5rem; /* Troszkę mniejszy, żeby długie zdania się mieściły */
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 50, 100, 0.6);
+    opacity: 0;
+    /* Usuwamy domyślną tranzycję tutaj, bo będziemy sterować animacją z JS */
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+}
+
+/* Klasa, którą będziemy dodawać w JS przy każdej zmianie słowa */
+.text-pop-blur {
+    animation: textPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* --- 7. ANIMACJE --- */
+@keyframes rotateBg {
+    from { transform: rotate(0deg) scale(1.2); }
+    to { transform: rotate(360deg) scale(1.2); }
+}
+
+@keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+@keyframes ringOut {
+    0% { width: 40px; height: 40px; opacity: 1; }
+    100% { width: 120px; height: 120px; opacity: 0; }
+}
+
+/* Animacja tła */
+@keyframes floatDown {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* NOWA: Animacja szybkiego spadania */
+@keyframes celebrationFall {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(120vh) rotate(720deg); }
 }
 
 @keyframes shine {
@@ -306,35 +306,93 @@ body {
     100% { left: 120%; }
 }
 
-/* Dodatkowe pływające serca w tle (automatyczne) */
-.heart-float {
-    background: none !important; /* Usuwamy stary styl płatków */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.heart-float::before {
-    content: '❤️';
-    font-size: 20px;
-}
-
-/* Dynamiczne cienie dla karty */
-.glass-card {
-    box-shadow: 0 0 20px rgba(255, 77, 109, 0.2);
-    transition: box-shadow 0.5s ease;
-}
-
-.glass-card:hover {
-    box-shadow: 0 0 40px rgba(255, 77, 109, 0.5);
-}
-
-/* Animacja tekstu wiersza - delikatne pojawianie się liter */
-.poem-text {
-    animation: fadeInText 2s ease-in;
-}
-
 @keyframes fadeInText {
     from { opacity: 0; filter: blur(5px); }
     to { opacity: 1; filter: blur(0); }
+}
+
+/* --- 8. RESPANSYWNOŚĆ --- */
+@media (max-width: 768px) {
+    .love-text { font-size: 4rem; }
+}
+
+@media (max-width: 480px) {
+    .glass-card { padding: 25px 15px; width: 95%; }
+    .title { font-size: 2rem; }
+    .heart-main { font-size: 3.5rem; }
+    .poem-text { font-size: 0.95rem; line-height: 1.6; }
+    .love-text { font-size: 2.5rem; }
+}
+/* --- ANIMACJE (Zaktualizowane) --- */
+
+/* Nowa animacja zmiany tekstu: startuje z rozmycia i powiększenia */
+@keyframes textPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(20px);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+/* --- ZAKTUALIZOWANY OVERLAY --- */
+.love-message-overlay {
+    background: radial-gradient(circle, rgba(255, 20, 147, 0.9) 0%, rgba(139, 0, 0, 0.95) 100%);
+    backdrop-filter: blur(15px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Dynamiczna zmiana koloru tła wyzwalana z JS */
+.bg-pulse-romantic {
+    animation: bgPulse 0.4s ease-out;
+}
+
+@keyframes bgPulse {
+    0% { background-color: rgba(255, 20, 147, 0.9); }
+    50% { background-color: rgba(255, 215, 0, 0.3); } /* Złoty błysk */
+    100% { background-color: rgba(139, 0, 0, 0.95); }
+}
+
+/* --- ZAKTUALIZOWANY TEKST --- */
+.love-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 5.5rem;
+    color: #fff;
+    /* Efekt neonowej poświaty */
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d, 0 0 40px #ff4d6d, 0 0 60px #ff4d6d;
+    text-align: center;
+    padding: 20px;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5));
+    will-change: transform, opacity, filter;
+}
+
+/* Animacja WOW: Powiększenie + Rozbłysk + Wyostrzenie */
+.text-wow-animation {
+    animation: textWow 0.45s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes textWow {
+    0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-5deg);
+        filter: blur(20px) brightness(2);
+    }
+    50% {
+        opacity: 0.8;
+        filter: blur(5px) brightness(1.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+        filter: blur(0) brightness(1);
+    }
 }

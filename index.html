@@ -3,30 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Patryk Kamiński">
     <title>Dla Mojej Jedynej ❤️</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <div class="background-vortex"></div>
-    <div id="valentine-question" class="question-overlay">
-    <div class="glass-card">
-        <h1 class="title">Mam do Ciebie pytanie...</h1>
-        <p class="poem-text">Czy zostaniesz moją Walentynką? ❤️</p>
-        <div class="btn-group">
-            <button class="magic-btn" onclick="acceptValentine()">TAK! 😍</button>
-            <button class="magic-btn btn-no" onmouseover="moveButton(this)">NIE 😢</button>
+    
+    <div id="valentine-question" class="overlay question-overlay">
+        <div class="glass-card">
+            <h1 class="title">Mam do Ciebie pytanie...</h1>
+            <p class="poem-text">Czy zostaniesz moją Walentynką? ❤️</p>
+            <div class="btn-group">
+                <button class="magic-btn" id="btn-yes">TAK! 😍</button>
+                <button class="magic-btn btn-no" id="btn-no">NIE 😢</button>
+            </div>
         </div>
     </div>
-    </div>
+
     <div class="floating-elements">
-        <div class="petal"></div>
         <div class="heart-float"></div>
-        <div class="petal"></div>
         <div class="heart-float"></div>
-        <div class="petal"></div>
+        <div class="heart-float"></div>
+        <div class="heart-float"></div>
+        <div class="heart-float"></div>
     </div>
 
     <main class="main-container">
@@ -52,184 +53,146 @@
                 Dziękuję, że jesteś przy mnie każdego dnia.
             </p>
 
-            <button class="magic-btn" onclick="celebrate()">Kliknij tutaj, Skarbie!</button>
-            <div class="love-message-overlay" id="loveMessageOverlay">
-            <p class="love-text">Kocham Cię ❤️</p>
-        </div>
+            <button class="magic-btn" id="btn-celebrate">Kliknij tutaj, Skarbie!</button>
         </div>
     </main>
 
+    <div class="overlay love-message-overlay" id="loveMessageOverlay">
+        <p class="love-text">Kocham Cię ❤️</p>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script >
+      document.addEventListener('DOMContentLoaded', () => {
+    const btnYes = document.getElementById('btn-yes');
+    const btnNo = document.getElementById('btn-no');
+    const btnCelebrate = document.getElementById('btn-celebrate');
+    const questionOverlay = document.getElementById('valentine-question');
+    const loveOverlay = document.getElementById('loveMessageOverlay');
+    const loveTextElement = loveOverlay.querySelector('.love-text');
+    const heartsContainer = document.getElementById('celebration-hearts-container');
 
-<script>
-    function celebrate() {
-    const loveMessageOverlay = document.getElementById('loveMessageOverlay');
-    loveMessageOverlay.classList.add('show');
+    // Baza 100 języków (BEZ NAZW JĘZYKÓW)
+    const loveTranslations100 = [
+        "Kocham Cię ❤️", "I Love You ❤️", "Je t'aime ❤️", "Ich liebe dich ❤️", "Te amo ❤️", 
+        "Ti amo ❤️", "Eu te amo ❤️", "Aishiteru ❤️", "Saranghae ❤️", "Wǒ ài nǐ ❤️",
+        "Ya tyebya lyublyu ❤️", "Ani ohev otach ❤️", "Volim te ❤️", "Jeg elsker dig ❤️", "Ik hou van jou ❤️",
+        "Szeretlek ❤️", "Miluji tě ❤️", "Te iubesc ❤️", "Ek het jou lief ❤️", "Mahal kita ❤️",
+        "Rakastan sinua ❤️", "Jag älskar dig ❤️", "Jeg elsker deg ❤️", "S'agapo ❤️", "Seni seviyorum ❤️",
+        "Obicham te ❤️", "Ľúbim ťa ❤️", "Ljubim te ❤️", "Te dua ❤️", "Volim te ❤️",
+        "Taim i' ngra leat ❤️", "Tha gaol agam ort ❤️", "Rwy'n dy garu di ❤️", "Ana behibek ❤️", "Main tumse pyar karta hoon ❤️",
+        "Naku penda ❤️", "Mena tanda wena ❤️", "Ke a go rata ❤️", "Ninapenda wewe ❤️", "Kulo tresno marang sliramu ❤️",
+        "Saya cinta padamu ❤️", "Saya sayangkan mu ❤️", "Chun toke bhalobashi ❤️", "M'bi fe ❤️", "Inu lulu ❤️",
+        "Ami tomake bhalobashi ❤️", "Kuyayki ❤️", "Ndi a ni funa ❤️", "Mi aime jou ❤️", "Aroha nui ❤️",
+        "Aloha wau iā ʻoe ❤️", "Ua here vau ia oe ❤️", "Ou te alofa ia te oe ❤️", "Te sakam ❤️", "Es tevi mīlu ❤️",
+        "Aš tave myliu ❤️", "Ma armastan sind ❤️", "Ana moajaba bik ❤️", "Ndie guank ❤️", "T'estimo ❤️",
+        "Quérote ❤️", "Amo-te ❤️", "Ik hald fan dy ❤️", "I love thee ❤️", "Ahs teere ❤️",
+        "Kameelaka ❤️", "Ni m'agradás ❤️", "Ami tomay bhalobashi ❤️", "Hoon tane prem karu chu ❤️", "Naanu ninnanu preethisuthene ❤️",
+        "Njan ninne premikunnu ❤️", "Mi tumchyavar prem karto ❤️", "Aamee tuma ke bhalo baashi ❤️", "Main tainu pyar karda haan ❤️", "Naa ninna premistunnanu ❤️",
+        "Phaadichii ❤️", "Ahiboki ❤️", "Inhobbok ❤️", "Bi chamd khairtai ❤️", "Maite zaitut ❤️",
+        "Nanga def ❤️", "Anigu waan ku jeclahay ❤️", "Nanirek ❤️", "I mog di ❤️", "Ik zie oe geerne ❤️",
+        "Ich hoan dich gear ❤️", "Yes kez sirumem ❤️", "M'en bakhsh ❤️", "Mi amas vin ❤️", "Ayor anosh'ni ❤️",
+        "Kulo tresno ❤️", "Amote ❤️", "Phom rak khun ❤️", "Em yeu anh ❤️", "Knhom srolanh anak ❤️",
+        "Ch'ha di garn ❤️", "Iech hun dech gäer ❤️"
+    ];
 
-    // 1. GŁÓWNY WYBUCH (Środek)
+    let heartInterval;
+
+    function spawnCelebrationHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('celebration-heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        const size = Math.random() * 30 + 20;
+        heart.style.fontSize = size + 'px';
+        const duration = Math.random() * 3 + 2;
+        heart.style.animationDuration = duration + 's';
+        
+        heartsContainer.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, duration * 1000);
+    }
+
+    // --- Listenery ---
+
+    btnYes.addEventListener('click', () => {
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'], shapes: ['heart'] });
+        questionOverlay.classList.add('hidden-overlay');
+    });
+
+    btnNo.addEventListener('mouseover', function() {
+        const x = Math.random() * (window.innerWidth - this.offsetWidth);
+        const y = Math.random() * (window.innerHeight - this.offsetHeight);
+        this.style.position = 'absolute';
+        this.style.left = x + 'px';
+        this.style.top = y + 'px';
+    });
+
+    btnCelebrate.addEventListener('click', () => {
+    // 1. Przygotowanie ekranu
+    loveTextElement.innerText = "Kocham Cię ❤️";
+    loveTextElement.classList.add('text-wow-animation');
+    loveOverlay.classList.add('show');
+
+    // Wielki wybuch na start
     confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#ff4d6d', '#ff85a1', '#ffffff'],
+        particleCount: 200,
+        spread: 120,
+        origin: { y: 0.5 },
+        colors: ['#ff0000', '#ffd700', '#ffffff'],
         shapes: ['heart']
     });
 
-    // 2. DESZCZ SERC (Trwający 3 sekundy)
-    const duration = 3000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    heartInterval = setInterval(spawnCelebrationHeart, 150);
 
-    function randomInRange(min, max) {
-        return Math.random() * (max - min) + min;
-    }
-
-    const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-            return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-        // Wystrzały z lewej i prawej strony
-        confetti(Object.assign({}, defaults, { 
-            particleCount, 
-            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-            shapes: ['heart'],
-            colors: ['#ff0040', '#ffffff']
-        }));
-        confetti(Object.assign({}, defaults, { 
-            particleCount, 
-            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-            shapes: ['heart'],
-            colors: ['#ff0040', '#ffffff']
-        }));
-    }, 250);
-
-    // 3. EFEKT "SZKOLNEGO" KONFETTI (Boki)
     setTimeout(() => {
-        confetti({
-            particleCount: 100,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-            colors: ['#ff4d6d', '#ffffff']
-        });
-        confetti({
-            particleCount: 100,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-            colors: ['#ff4d6d', '#ffffff']
-        });
-    }, 1000);
+        let index = 0;
+        const languageInterval = setInterval(() => {
+            if (index < loveTranslations100.length) {
+                
+                // --- EFEKT WOW DLA KAŻDEGO SŁOWA ---
+                
+                // A. Reset animacji tekstu
+                loveTextElement.classList.remove('text-wow-animation');
+                void loveTextElement.offsetWidth; 
+                
+                // B. Puls tła
+                loveOverlay.classList.remove('bg-pulse-romantic');
+                void loveOverlay.offsetWidth;
+                loveOverlay.classList.add('bg-pulse-romantic');
 
-    // Automatyczne ukrycie napisu po zakończeniu efektów
-    setTimeout(() => {
-        loveMessageOverlay.classList.remove('show');
-    }, 4500);
-}
-    function celebrate() {
-        const loveMessageOverlay = document.getElementById('loveMessageOverlay');
+                // C. Zmiana tekstu i odpalenie animacji
+                loveTextElement.innerText = loveTranslations100[index];
+                loveTextElement.classList.add('text-wow-animation');
 
-        // 1. Efekt BOOM (Konfetti w kształcie serc)
-        const duration = 3 * 1000;
-        const end = Date.now() + duration;
-
-        (function frame() {
-            confetti({
-                particleCount: 3,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ['#ff4d6d', '#ff85a1', '#ffffff', '#ff0000'],
-                shapes: ['heart', 'circle'] // Dodajemy serca i kółka
-            });
-            confetti({
-                particleCount: 3,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ['#ff4d6d', '#ff85a1', '#ffffff', '#ff0000'],
-                shapes: ['heart', 'circle'] // Dodajemy serca i kółka
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
+                // D. Mini-eksplozja "iskier" przy każdym słowie
+                confetti({
+                    particleCount: 15,
+                    spread: 60,
+                    startVelocity: 20,
+                    origin: { y: 0.5 },
+                    colors: ['#ffd700', '#ffffff'], // Złoto i biel dla romantyzmu
+                    disableForReducedMotion: true
+                });
+                
+                index++;
+            } else {
+                // KONIEC
+                clearInterval(languageInterval);
+                clearInterval(heartInterval); 
+                setTimeout(() => {
+                    loveOverlay.classList.remove('show');
+                    loveTextElement.classList.remove('text-wow-animation');
+                    loveOverlay.classList.remove('bg-pulse-romantic');
+                    heartsContainer.innerHTML = ''; 
+                }, 3000);
             }
-        }());
-
-        // 2. Efekt WOW - strzał centralny z większą ilością serc
-        confetti({
-            particleCount: 150,
-            spread: 90, // Większy rozrzut
-            origin: { y: 0.6 },
-            colors: ['#ff4d6d', '#ffffff', '#ff0000', '#ffc0cb'], // Więcej odcieni różu
-            shapes: ['heart', 'circle'] // Upewnij się, że są serca!
-        });
-
-        // 3. Pokaż animowany napis "Kocham Cię <3"
-        loveMessageOverlay.classList.add('show');
-
-        // Opcjonalnie: Uruchom ponowną animację napisu, jeśli został już raz pokazany
-        loveMessageOverlay.querySelector('.love-text').style.animation = 'none';
-        loveMessageOverlay.querySelector('.love-text').offsetHeight; // Trigger reflow
-        loveMessageOverlay.querySelector('.love-text').style.animation = null;
-
-
-        // 4. Otwarcie nowej karty po krótkim opóźnieniu
-        // (żeby nacieszyć oko efektem i napisem)
-        setTimeout(() => {
-            
-            
-            // Ukryj napis po otwarciu nowej karty
-            loveMessageOverlay.classList.remove('show');
-
-        }, 4000); // Wydłużono czas, aby napis był widoczny dłużej
-    }
-    // 1. Funkcja po kliknięciu TAK
-    function acceptValentine() {
-        // Efekt wybuchu na start
-        confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            colors: ['#ff4d6d', '#ffffff']
-        });
-
-        // Ukrywamy ekran pytania
-        document.getElementById('valentine-question').classList.add('hidden-overlay');
-    }
-
-    // 2. Funkcja uciekającego przycisku NIE
-    function moveButton(btn) {
-        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
-        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
-        
-        btn.style.position = 'absolute';
-        btn.style.left = x + 'px';
-        btn.style.top = y + 'px';
-    }
-
-    // 3. Twoja główna funkcja "Celebracji" (ta z poprzedniego kroku)
-    function celebrate() {
-        const loveMessageOverlay = document.getElementById('loveMessageOverlay');
-        
-        confetti({
-            particleCount: 200,
-            spread: 100,
-            origin: { y: 0.6 },
-            shapes: ['heart']
-        });
-
-        loveMessageOverlay.classList.add('show');
-
-        setTimeout(() => {
-            
-            loveMessageOverlay.classList.remove('show');
-        }, 3000);
-    }
-</script>
+        }, 700); 
+    }, 2000);
+});
+      });
+    </script>
 </body>
 </html>
