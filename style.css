@@ -228,6 +228,7 @@ body {
 .question-overlay {
     background: #ff85a1;
     transition: transform 0.8s cubic-bezier(0.87, 0, 0.13, 1);
+    
 }
 
 .hidden-overlay {
